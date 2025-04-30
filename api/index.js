@@ -28,3 +28,12 @@ mongoose
 app.listen(PORT, () => {
   console.log("server listning to port", PORT);
 });
+
+//endpoint to register a employee
+app.post("/addEmployee", async (req, res) => {
+  try {
+  } catch (error) {
+    console.log("Error while creating the employee", error);
+    res.status(500).json({ message: "Failed to add an employee" });
+  }
+});
