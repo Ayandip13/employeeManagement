@@ -10,8 +10,11 @@ import {
   Octicons,
 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 
 const index = () => {
+  const router = useRouter();
+
   return (
     <ScrollView>
       <StatusBar style="dark" backgroundColor="#F1EFEC" />
@@ -41,6 +44,7 @@ const index = () => {
                 flex: 1,
                 justifyContent: "center",
               }}
+              onPress={() => router.push("(home)/employees")}
             >
               <View
                 style={{
@@ -345,7 +349,6 @@ const index = () => {
               <Text style={{ marginTop: 7 }}>Increased Workflow</Text>
             </View>
           </View>
-
 
           <View
             style={{
