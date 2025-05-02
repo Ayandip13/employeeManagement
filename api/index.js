@@ -36,11 +36,11 @@ const Attendance = require("./models/attendance.model.js");
 app.post("/addEmployee", async (req, res) => {
   try {
     const {
-      employeeName,
+      name,
       employeeId,
       designation,
-      phoneNumber,
-      dateOfBirth,
+      mobileNo,
+      dob,
       joiningDate,
       activeEmployee,
       salary,
@@ -48,26 +48,26 @@ app.post("/addEmployee", async (req, res) => {
     } = req.body;
 
     if (
-      !employeeName ||
-      employeeId ||
-      designation ||
-      phoneNumber ||
-      dateOfBirth ||
-      joiningDate ||
-      activeEmployee ||
-      salary ||
-      address
+      !name ||
+      !employeeId ||
+      !designation ||
+      !mobileNo ||
+      !dob ||
+      !joiningDate ||
+      activeEmployee === undefined ||
+      !salary ||
+      !address
     ) {
       return res.status(401).json({ message: "All fields are required" });
     }
 
     //create a new employee
     const newEmployee = new Employee({
-      employeeName,
+      name,
       employeeId,
       designation,
-      phoneNumber,
-      dateOfBirth,
+      mobileNo,
+      dob,
       joiningDate,
       activeEmployee,
       salary,
@@ -88,10 +88,12 @@ app.post("/addEmployee", async (req, res) => {
 //endpoint to fetch all the employees
 
 app.get("/employees", async (req, res) => {
+  console.log("GET /employees called"); // 🔍 debug
   try {
-    const employees = Employee.find();
-    res.status(200).json(employees)
+    const employees = await Employee.find();
+    res.status(200).json(employees);
   } catch (error) {
-    res.status(500).json({ message: "Failed to retrive the employees" });
+    console.error("Error in /employees:", error); // 🔥 show real error
+    res.status(500).json({ message: "Failed to retrieve the employees" });
   }
 });

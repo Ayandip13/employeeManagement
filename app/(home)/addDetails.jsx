@@ -1,12 +1,15 @@
 import {
+  Alert,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import React, { useState } from "react";
+import axios from "axios";
 
 const AddDetails = () => {
   const [name, setName] = useState("");
@@ -17,6 +20,44 @@ const AddDetails = () => {
   const [salary, setSalary] = useState("");
   const [address, setAddress] = useState("");
   const [designation, setDesignation] = useState("");
+
+  const handleRegister = () => {
+    const employeeData = {
+      name,
+      employeeId,
+      designation,
+      mobileNo,
+      dob,
+      joiningDate,
+      activeEmployee: true,
+      salary,
+      address,
+    };
+
+    axios
+      .post("http://192.168.0.100:8000/addEmployee", employeeData)
+      .then((response) => {
+        Alert.alert(
+          "Registration Successfull",
+          "You have been registered successfully"
+        );
+        setName("");
+        setAddress("");
+        setDesignation("");
+        setDob("");
+        setEmployeeId("");
+        setJoiningDate("");
+        setMobileNo("");
+        setSalary("");
+      })
+      .catch((error) => {
+        Alert.alert(
+          "Registration Failed",
+          "An error have occurred during the registration process"
+        ),
+          console.log(error);
+      });
+  };
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -110,7 +151,7 @@ const AddDetails = () => {
             Date Of Birth
           </Text>
           <TextInput
-            placeholder="Enter Date of Birth"
+            placeholder="eg. dd-mm-yyyy"
             value={dob}
             onChangeText={(e) => setDob(e)}
             style={{
@@ -126,7 +167,7 @@ const AddDetails = () => {
         <View>
           <Text style={{ fontSize: 17, fontWeight: "bold" }}>Joining Date</Text>
           <TextInput
-            placeholder="Joining Date"
+            placeholder="eg. dd-mm-yyyy"
             value={joiningDate}
             onChangeText={(e) => setJoiningDate(e)}
             style={{
@@ -155,7 +196,7 @@ const AddDetails = () => {
           <Text style={{ fontSize: 17, fontWeight: "bold" }}>Salary</Text>
           <TextInput
             keyboardType="decimal-pad"
-            placeholder="Enter Salary"
+            placeholder="Salary in 000000 format"
             value={salary}
             onChangeText={(e) => setSalary(e)}
             style={{
@@ -184,7 +225,8 @@ const AddDetails = () => {
           />
         </View>
 
-        <Pressable
+        <TouchableOpacity
+          onPress={() => handleRegister()}
           style={{
             backgroundColor: "#ABCABA",
             padding: 10,
@@ -197,7 +239,7 @@ const AddDetails = () => {
           <Text style={{ fontWeight: "bold", color: "#000" }}>
             Add Employee
           </Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

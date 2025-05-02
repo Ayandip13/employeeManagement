@@ -7,7 +7,7 @@ const employeeSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    employeeName: {
+    name: {
       type: String,
       require: true,
     },
@@ -19,7 +19,7 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    dateOfBirth: {
+    dob: {
       type: String,
       required: true,
     },
@@ -31,7 +31,7 @@ const employeeSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
-    phoneNumber: {
+    mobileNo: {
       type: Number,
       required: true,
     },
