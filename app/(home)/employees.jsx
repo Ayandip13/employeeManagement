@@ -3,10 +3,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { StatusBar } from "expo-status-bar";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 const employees = () => {
   const [employees, setEmployees] = useState([]);
   const [input, setInput] = useState("");
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchEmployeeData = async () => {
@@ -69,6 +72,9 @@ const employees = () => {
           )}
         </Pressable>
       </View>
+      <Pressable onPress={() => router.push('/(home)/addDetails')}>
+        <AntDesign name="pluscircle" size={24} color="#0072b1" />
+      </Pressable>
     </View>
   );
 };
