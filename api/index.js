@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const moment = require("moment");
 const mongoose = require("mongoose");
 
 const app = express();
@@ -142,6 +143,13 @@ app.get("/attendance", async (req, res) => {
 
 app.get("/attendance-report-all-employees", async (req, res) => {
   try {
+    const { month, year } = req.query;
+
+    const startDate = moment(`${year}-${month}-01`, "YYYY-MM-DD")
+      .startOf("month")
+      .toDate();
+
+    const endDate = moment(startDate).endOf("month").toDate();
   } catch (error) {
     res.status(500).json({ message: "Error fetching summary report" });
   }
