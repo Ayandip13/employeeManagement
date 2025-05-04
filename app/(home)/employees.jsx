@@ -4,6 +4,7 @@ import axios from "axios";
 import { StatusBar } from "expo-status-bar";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import SearchResults from "../../components/SearchResults";
 
 const employees = () => {
   const [employees, setEmployees] = useState([]);
@@ -14,9 +15,7 @@ const employees = () => {
   useEffect(() => {
     const fetchEmployeeData = async () => {
       try {
-        const response = await axios.get(
-          "http://192.168.0.100:8000/employees"
-        );
+        const response = await axios.get("http://192.168.0.101:8000/employees");
         setEmployees(response.data);
       } catch (error) {
         console.log("Error while fetching the employee data", error);
@@ -25,6 +24,9 @@ const employees = () => {
 
     fetchEmployeeData();
   }, []);
+
+  console.log(employees);
+
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <StatusBar backgroundColor="#fff" />
@@ -50,6 +52,7 @@ const employees = () => {
             marginHorizontal: 7,
             gap: 10,
             backgroundColor: "#fff",
+            flex: 1,
             height: 40,
             borderRadius: 5,
             marginLeft: 10,
@@ -66,15 +69,30 @@ const employees = () => {
           {employees.length > 0 && (
             <View>
               <Pressable>
-                <AntDesign name="pluscircle" size={24} color="black" />
+                <AntDesign name="pluscircle" size={24} color="#123458" />
               </Pressable>
             </View>
           )}
         </Pressable>
       </View>
-      <Pressable onPress={() => router.push('/(home)/addDetails')}>
-        <AntDesign name="pluscircle" size={24} color="#0072b1" />
-      </Pressable>
+      {employees.length > 0 ? (
+        <SearchResults data={employees} input={input} setInput={setInput} />
+      ) : (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text>No Data</Text>
+          <Text>Press on the plus button and add your employee</Text>
+          <Pressable onPress={() => router.push("/(home)/addDetails")}>
+            <AntDesign
+              style={{ marginTop: 30 }}
+              name="pluscircle"
+              size={24}
+              color="black"
+            />
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 };

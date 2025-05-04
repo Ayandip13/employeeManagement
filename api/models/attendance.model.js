@@ -5,7 +5,7 @@ const attendanceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  emoployeeName: {
+  name: {
     type: String,
     required: true,
   },

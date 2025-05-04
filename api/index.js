@@ -88,12 +88,61 @@ app.post("/addEmployee", async (req, res) => {
 //endpoint to fetch all the employees
 
 app.get("/employees", async (req, res) => {
-  console.log("GET /employees called"); // 🔍 debug
+  console.log("GET /employees called");
   try {
     const employees = await Employee.find();
     res.status(200).json(employees);
   } catch (error) {
-    console.error("Error in /employees:", error); // 🔥 show real error
+    console.error("Error in /employees:", error);
     res.status(500).json({ message: "Failed to retrieve the employees" });
+  }
+});
+
+//endpoints to mark the attendance the perticular employee
+
+app.post("/attendance", async (req, res) => {
+  try {
+    const { employeeId, name, date, status } = req.body;
+
+    // Check if attendance already exists for the given employee on the given date
+    const existingAttendance = await Attendance.findOne({ employeeId, date });
+    if (existingAttendance) {
+      // If found, update the existing attendance status
+      existingAttendance.status = status;
+      await existingAttendance.save();
+
+      // and sending response with the updated data
+      res.status(200).json(existingAttendance);
+    } else {
+      // If not found, create a new attendance entry
+      const newAttendance = new Attendance({
+        employeeId,
+        name,
+        date,
+        status,
+      });
+      await newAttendance.save();
+      res.status(200).json(newAttendance);
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error submitting attendance" });
+  }
+});
+
+app.get("/attendance", async (req, res) => {
+  try {
+    const { date } = req.query;
+    const attendanceData = await Attendance.find({ date: date });
+
+    res.status(200).json(attendanceData);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching attendance" });
+  }
+});
+
+app.get("/attendance-report-all-employees", async (req, res) => {
+  try {
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching summary report" });
   }
 });
