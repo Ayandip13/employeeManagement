@@ -149,6 +149,50 @@ app.get("/attendance-report-all-employees", async (req, res) => {
       .startOf("month")
       .toDate();
 
+    const report = await Attendance.aggregate([
+      {
+        $match: {
+          $expr: {
+            $and: [
+              {
+                $eq: [
+                  {
+                    $month: { $dateFromString: { dateString: "$date" } },
+                  },
+                  parseInt(req.query.month),
+                ],
+              },
+              {
+                $eq: [
+                  { $year: { $dateFromString: { dateString: "$date" } } },
+                  parseInt(req.query.year),
+                ],
+              },
+            ],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$employeeId",
+          present: {
+            $sum: {
+              $cond: { if: { $eq: ["status", "present"] }, then: 1, else: 0 },
+            },
+          },
+          absent: {
+            $cond: { if: { $eq: ["status", "absent"] }, then: 1, else: 0 },
+          },
+          halfday: {
+            $cond: { if: { $eq: ["status", "halfday"] }, then: 1, else: 0 },
+          },
+          holiday: {
+            $cond: { if: { $eq: ["status", "holiday"] }, then: 1, else: 0 },
+          },
+        },
+      },
+    ]);
+
     const endDate = moment(startDate).endOf("month").toDate();
   } catch (error) {
     res.status(500).json({ message: "Error fetching summary report" });
