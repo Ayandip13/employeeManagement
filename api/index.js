@@ -191,9 +191,32 @@ app.get("/attendance-report-all-employees", async (req, res) => {
           },
         },
       },
+      {
+        $lookup: {
+          from: '"employees',
+          localField: "_id",
+          foreignField: "employeeId",
+          as: "employeeDetails",
+        },
+      },
+      {
+        $unwind: "$employeeDetails",
+      },
+      {
+        $project: {
+          _id: 1,
+          present: 1,
+          absent: 1,
+          halfday: 1,
+          name: "$employeeDetails.employeeName",
+          designation: "$employeeDetails.salary",
+          employeeId: "$employeeDetails.employeeId",
+        },
+      },
     ]);
-
     const endDate = moment(startDate).endOf("month").toDate();
+
+    res.status(200).json({ report });
   } catch (error) {
     res.status(500).json({ message: "Error fetching summary report" });
   }

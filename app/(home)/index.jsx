@@ -63,6 +63,7 @@ const index = () => {
               </Text>
             </Pressable>
             <Pressable
+            onPress={()=>router.push('/(home)/markAttendance')}
               style={{
                 backgroundColor: "#7AB2D3",
                 padding: 12,
