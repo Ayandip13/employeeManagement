@@ -44,7 +44,7 @@ const index = () => {
                 flex: 1,
                 justifyContent: "center",
               }}
-              onPress={() => router.push("(home)/employees")}
+              onPress={() => router.push("/(home)/employees")}
             >
               <View
                 style={{
@@ -63,7 +63,7 @@ const index = () => {
               </Text>
             </Pressable>
             <Pressable
-            onPress={()=>router.push('/(home)/markAttendance')}
+              onPress={() => router.push("/(home)/markAttendance")}
               style={{
                 backgroundColor: "#7AB2D3",
                 padding: 12,

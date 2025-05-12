@@ -27,7 +27,7 @@ const markAttendance = () => {
   useEffect(() => {
     const fetchEmployeeData = async () => {
       try {
-        const response = await axios.get("http://192.168.0.100:8000/employees");
+        const response = await axios.get("http://192.168.0.102:8000/employees");
         setEmployees(response.data);
       } catch (error) {
         console.log("Error while fetching the employee data", error);
@@ -41,7 +41,7 @@ const markAttendance = () => {
 
   const fetchAttendanceData = async () => {
     try {
-      const response = await axios.get(`https://192.168.0.100/attendance`, {
+      const response = await axios.get(`https://192.168.0.102/attendance`, {
         params: {
           date: currentDate.format("MM D, YYYY"),
         },
@@ -87,6 +87,7 @@ const markAttendance = () => {
         <View style={{ marginHorizontal: 12 }}>
           {employees.map((item, index) => (
             <TouchableOpacity
+            key={index}
               style={{ flexDirection: "row", alignItems: "center", gap: 10, marginBottom:10 }}
             >
               <View
