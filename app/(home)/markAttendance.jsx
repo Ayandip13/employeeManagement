@@ -4,6 +4,7 @@ import moment from "moment";
 import axios from "axios";
 import { AntDesign } from "@expo/vector-icons";
 import employees from "./employees";
+import { router } from "expo-router";
 
 const markAttendance = () => {
   const [currentDate, setCurrentDate] = useState(moment());
@@ -27,7 +28,7 @@ const markAttendance = () => {
   useEffect(() => {
     const fetchEmployeeData = async () => {
       try {
-        const response = await axios.get("http://192.168.0.102:8000/employees");
+        const response = await axios.get("http://192.168.0.103:8000/employees");
         setEmployees(response.data);
       } catch (error) {
         console.log("Error while fetching the employee data", error);
@@ -41,7 +42,7 @@ const markAttendance = () => {
 
   const fetchAttendanceData = async () => {
     try {
-      const response = await axios.get(`https://192.168.0.102/attendance`, {
+      const response = await axios.get(`https://192.168.0.103/attendance`, {
         params: {
           date: currentDate.format("MM D, YYYY"),
         },
@@ -87,7 +88,16 @@ const markAttendance = () => {
         <View style={{ marginHorizontal: 12 }}>
           {employees.map((item, index) => (
             <TouchableOpacity
-            key={index}
+              onPress={()=>router.push({
+                pathname:"/[user]",
+                params:{
+                  name: item?.name,
+                  id: item?.employeeId,
+                  salary: item?.salary,
+                  designation:item?.designation
+                }
+              })}
+              key={index}
               style={{ flexDirection: "row", alignItems: "center", gap: 10, marginBottom:10 }}
             >
               <View
