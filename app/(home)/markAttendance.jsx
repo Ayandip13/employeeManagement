@@ -42,7 +42,7 @@ const markAttendance = () => {
 
   const fetchAttendanceData = async () => {
     try {
-      const response = await axios.get(`https://192.168.0.103/attendance`, {
+      const response = await axios.get(`http://192.168.0.103/attendance`, {
         params: {
           date: currentDate.format("MM D, YYYY"),
         },
@@ -88,17 +88,24 @@ const markAttendance = () => {
         <View style={{ marginHorizontal: 12 }}>
           {employees.map((item, index) => (
             <TouchableOpacity
-              onPress={()=>router.push({
-                pathname:"/[user]",
-                params:{
-                  name: item?.name,
-                  id: item?.employeeId,
-                  salary: item?.salary,
-                  designation:item?.designation
-                }
-              })}
+              onPress={() =>
+                router.push({
+                  pathname: "/[user]",
+                  params: {
+                    name: item?.name,
+                    id: item?.employeeId,
+                    salary: item?.salary,
+                    designation: item?.designation,
+                  },
+                })
+              }
               key={index}
-              style={{ flexDirection: "row", alignItems: "center", gap: 10, marginBottom:10 }}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 10,
+                marginBottom: 10,
+              }}
             >
               <View
                 style={{
